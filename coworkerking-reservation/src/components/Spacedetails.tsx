@@ -32,14 +32,14 @@ export default function SpaceDetails(props: Readonly<{space: Space & {descriptio
       </Typography>
       <Typography variant="body1">{space.pricePerHour} € / heure</Typography>
 
-      <Button
-        variant="contained"
-        sx={{ mt: 4 }}
-        component={Link}
-        href={`/spaces/${space.id}/availabilities`}
-      >
-        Voir les disponibilités
-      </Button>
+      <Link href={`/spaces/${space.id}/availabilities`} passHref>
+        <Button
+          variant="contained"
+          sx={{ mt: 4 }}
+        >
+          Voir les disponibilités
+        </Button>
+      </Link>
     </Box>
   );
 }
