@@ -16,7 +16,7 @@ export interface Space {
   type: string;
   capacity: number;
   pricePerHour: number;
-  thumbnail: string;
+  thumbnail?: string;
 }
 
 export default function SpacesPage() {
