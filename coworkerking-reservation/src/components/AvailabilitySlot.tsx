@@ -33,8 +33,7 @@ export default function AvailabilitySlot(props: Readonly<AvailabilitySlotProps>)
       </Typography>
 
       {/* TODO: Implement reservation page later */}
-      {/* <Link href={`/reservation/confirm?spaceId=${props.spaceId}&start=${props.slot.start}&end=${props.slot.end}`} passHref> */}
-       <Link href={'/'} passHref> 
+       <Link href={`/reservation/confirm?spaceId=${props.spaceId}&start=${props.slot.start}&end=${props.slot.end}`} passHref> 
         <Button
           variant="contained"
           size="small"
