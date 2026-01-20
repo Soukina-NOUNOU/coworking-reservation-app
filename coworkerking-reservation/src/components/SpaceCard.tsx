@@ -7,18 +7,19 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Link from "next/link";
-import { Space } from "@/app/spaces/page";
+import { Space } from "@/types";
 
+interface SpaceCardProps {
+  space: Space;
+}
 
-
-export default function SpaceCard(props: Readonly<{space: Space}>) {
-  const { space } = props;
+export default function SpaceCard({ space }: SpaceCardProps) {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
         height="160"
-        image={space.thumbnail}
+        image={space.thumbnail || "/placeholder-space.jpg"}
         alt={space.name}
       />
 
@@ -26,7 +27,7 @@ export default function SpaceCard(props: Readonly<{space: Space}>) {
         <Typography variant="h6">{space.name}</Typography>
 
         <Typography variant="body2" color="text.secondary">
-          Type : {space.type}
+          Type : {space.type.replace('_', ' ')}
         </Typography>
 
         <Typography variant="body2" color="text.secondary">

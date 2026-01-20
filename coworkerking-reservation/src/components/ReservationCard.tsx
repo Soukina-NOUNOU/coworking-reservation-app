@@ -3,19 +3,14 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import { ReservationWithSpace } from "@/types";
 
 interface ReservationCardProps {
-  reservation: {
-    id: string;
-    spaceName: string;
-    start: string;
-    end: string;
-  };
+  reservation: ReservationWithSpace;
   onCancel: (reservationId: string) => void;
 }
 
-export default function ReservationCard(props: Readonly<ReservationCardProps>) {
-    const { reservation, onCancel } = props;
+export default function ReservationCard({ reservation, onCancel }: ReservationCardProps) {
   return (
     <Box
       sx={{
@@ -29,7 +24,11 @@ export default function ReservationCard(props: Readonly<ReservationCardProps>) {
       }}
     >
       <Box>
-        <Typography variant="h6">{reservation.spaceName}</Typography>
+        <Typography variant="h6">{reservation.space.name}</Typography>
+
+        <Typography variant="body2" color="text.secondary">
+          Type : {reservation.space.type.replace('_', ' ')}
+        </Typography>
 
         <Typography variant="body2" color="text.secondary">
           Début : {new Date(reservation.start).toLocaleString("fr-FR")}
@@ -38,14 +37,19 @@ export default function ReservationCard(props: Readonly<ReservationCardProps>) {
         <Typography variant="body2" color="text.secondary">
           Fin : {new Date(reservation.end).toLocaleString("fr-FR")}
         </Typography>
+
+        <Typography variant="body2" color="text.secondary">
+          Prix : {reservation.space.pricePerHour} € / heure
+        </Typography>
       </Box>
 
       <Button
         variant="outlined"
         color="error"
         onClick={() => onCancel(reservation.id)}
+        disabled={new Date(reservation.start) < new Date()} // Desactivation if reservation past
       >
-        Annuler
+        {new Date(reservation.start) < new Date() ? "Passée" : "Annuler"}
       </Button>
     </Box>
   );

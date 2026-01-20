@@ -3,13 +3,15 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
-import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Link from "next/link";
-import { Space } from "@/app/spaces/page";
+import { Space } from "@/types";
 
-export default function SpaceDetails(props: Readonly<{space: Space & {description: string; equipments: string[]}}>) {
-  const { space } = props;
+interface SpaceDetailsProps {
+  space: Space;
+}
+
+export default function SpaceDetails({ space }: SpaceDetailsProps) {
   return (
     <Box>
       <Typography variant="h4" gutterBottom>
@@ -28,9 +30,11 @@ export default function SpaceDetails(props: Readonly<{space: Space & {descriptio
       </Box>
 
       <Typography variant="h6" sx={{ mt: 3 }}>
-        Prix
+        Informations
       </Typography>
-      <Typography variant="body1">{space.pricePerHour} € / heure</Typography>
+      <Typography variant="body1">Type : {space.type.replace('_', ' ')}</Typography>
+      <Typography variant="body1">Capacité : {space.capacity} personnes</Typography>
+      <Typography variant="body1">Prix : {space.pricePerHour} € / heure</Typography>
 
       <Link href={`/spaces/${space.id}/availabilities`} passHref>
         <Button
