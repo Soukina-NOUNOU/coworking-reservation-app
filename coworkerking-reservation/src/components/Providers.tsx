@@ -1,15 +1,25 @@
 "use client";
 
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { ToastContainer } from "react-toastify";
-import 'dayjs/locale/fr';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr">
+    <>
       {children}
-      <ToastContainer position="top-right" autoClose={6000} />
-    </LocalizationProvider>
+      <ToastContainer 
+        position="top-right" 
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        className="mt-16" // Add margin top to avoid navbar overlay
+      />
+    </>
   );
 }

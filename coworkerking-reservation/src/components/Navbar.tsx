@@ -1,38 +1,112 @@
 "use client";
 
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 import Link from "next/link";
-import { Stack } from "@mui/material";
+import { useState } from "react";
+import { Menu, X, Calendar, Home, User } from "lucide-react";
 
 export default function Navbar() {
-  return (
-    <AppBar position="static" color="primary">
-      <Toolbar>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
-        <Link href="/" passHref>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Coworking App
-        </Typography>
-        </Link>
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-        <Box>
-          <Link href="/login" passHref>
-            <Button color="inherit">
+  const navigation = [
+    { name: 'Espaces', href: '/spaces', icon: Calendar },
+    { name: 'Mes Réservations', href: '/reservations', icon: Calendar },
+    { name: 'Mon Profil', href: '/me', icon: User },
+  ];
+
+  return (
+    <nav className="navbar">
+      <div className="container">
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2">
+            <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">CW</span>
+            </div>
+            <span className="font-heading font-bold text-xl text-gray-900">
+              CoworkSpace
+            </span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navigation.map((item) => {
+              const Icon = item.icon;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="flex items-center space-x-1 text-gray-600 hover:text-primary-600 transition-colors"
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className="font-medium">{item.name}</span>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Desktop Auth Buttons */}
+          <div className="hidden md:flex items-center space-x-4">
+            <Link href="/login" className="btn-outline">
               Connexion
-            </Button>
-          </Link>
-          <Link href="/register" passHref>
-            <Button color="inherit">
+            </Link>
+            <Link href="/register" className="btn-primary">
               Inscription
-            </Button>
-          </Link>
-        </Box>
-        </Stack>
-      </Toolbar>
-    </AppBar>
+            </Link>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 rounded-lg text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
+              {navigation.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-600 hover:text-primary-600 hover:bg-gray-50 transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Icon className="h-5 w-5" />
+                    <span className="font-medium">{item.name}</span>
+                  </Link>
+                );
+              })}
+              <div className="pt-4 mt-4 border-t border-gray-200 space-y-2">
+                <Link
+                  href="/login"
+                  className="block w-full text-center btn-outline"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Connexion
+                </Link>
+                <Link
+                  href="/register"
+                  className="block w-full text-center btn-primary"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Inscription
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
   );
 }

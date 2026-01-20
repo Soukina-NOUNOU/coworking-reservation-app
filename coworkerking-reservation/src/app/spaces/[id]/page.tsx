@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Container from "@mui/material/Container";
 import Navbar from "@/components/Navbar";
 import SpaceDetails from "@/components/Spacedetails";
 import SpaceGallery from "@/components/SpaceGallery";
@@ -30,10 +29,15 @@ export default async function SpaceDetailPage({ params }: SpaceDetailPageProps) 
     <>
       <Navbar />
 
-      <Container sx={{ mt: 6 }}>
+      <div className="min-h-screen bg-gray-50">
+        {/* Gallery Section */}
         <SpaceGallery photos={space.photos} />
-        <SpaceDetails space={space} />
-      </Container>
+        
+        {/* Content Section */}
+        <div className="container py-12">
+          <SpaceDetails space={space} />
+        </div>
+      </div>
     </>
   );
 }
