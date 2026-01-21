@@ -1,6 +1,24 @@
 "use server";
 
 import { createReservationController } from "../controller/reservationController";
+import { revalidatePath } from "next/cache";
+import { cancelReservation } from "@/controller/reservationController";
+
+export async function cancelReservationAction(reservationId: string) {
+  try {
+    await cancelReservation(reservationId);
+    
+    // Revalidate for refreshing the reservations page
+    revalidatePath("/reservations");
+    
+    return { success: true };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "Erreur inconnue" 
+    };
+  }
+}
 
 export async function createReservationAction(formData: { spaceId: string; start: string; end: string }) {
   const spaceId = formData.spaceId;

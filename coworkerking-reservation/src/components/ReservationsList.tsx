@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Loader } from "lucide-react";
 import ReservationCard from "@/components/ReservationCard";
 import { ReservationWithSpace } from "@/types";
-import { cancelReservationAction } from "@/actions/reservations";
+import { cancelReservationAction } from "@/serverAction/reservationAction";
 
 interface ReservationsListProps {
   reservations: ReservationWithSpace[];
