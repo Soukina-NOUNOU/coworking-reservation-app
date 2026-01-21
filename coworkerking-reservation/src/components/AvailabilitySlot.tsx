@@ -1,8 +1,11 @@
 "use client";
 
 import { Params } from "next/dist/server/request/params";
-import Link from "next/link";
 import { Clock } from "lucide-react";
+import { useState } from "react";
+import { createReservationAction } from "@/serverAction/reservationAction";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface AvailabilitySlotProps {
   slot: {
@@ -13,6 +16,29 @@ interface AvailabilitySlotProps {
 }
 
 export default function AvailabilitySlot(props: Readonly<AvailabilitySlotProps>) {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const onReserveClick = async () => {
+    try {
+      setLoading(true);
+     
+    await createReservationAction({
+      spaceId: props.spaceId as string,
+      start: props.slot.start,
+      end: props.slot.end,
+    });
+    router.push("/reservations")
+    toast.success("Réservation réussie !");
+    
+
+    setLoading(false);
+    } catch (error) {
+      console.error("Erreur lors de la réservation :", error);
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="card p-4 flex justify-between items-center hover:shadow-md transition-shadow">
       <div className="flex items-center space-x-2">
@@ -23,11 +49,13 @@ export default function AvailabilitySlot(props: Readonly<AvailabilitySlotProps>)
           {new Date(props.slot.end).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
         </span>
       </div>
-
-      {/* TODO: Implement reservation page later */}
-       <Link href={`/reservation/confirm?spaceId=${props.spaceId}&start=${props.slot.start}&end=${props.slot.end}`} className="btn-primary text-sm px-4 py-2">
+       <button
+        onClick={onReserveClick}
+        disabled={loading}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
+      >
         Réserver
-      </Link>
+      </button>
     </div>
   );
 }
