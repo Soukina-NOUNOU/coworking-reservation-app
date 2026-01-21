@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, SpaceType } from "@prisma/client";
 const prisma = new PrismaClient();
 type SpaceCreateInput = Prisma.SpaceCreateInput;
 
@@ -37,4 +37,9 @@ export async function getSpaceWithReservations(id: string) {
 
 export async function createSpace(data: SpaceCreateInput) {
   return prisma.space.create({ data });
+}
+
+export async function getSpaceTypes() {
+  // Return the enum values directly from Prisma
+  return Object.values(SpaceType);
 }

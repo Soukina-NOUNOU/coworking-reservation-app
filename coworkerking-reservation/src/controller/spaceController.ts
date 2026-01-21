@@ -1,4 +1,4 @@
-import { getAllSpaces, createSpace, getSpaceById, getSpaceWithReservations } from "@/model/space";
+import { getAllSpaces, createSpace, getSpaceById, getSpaceWithReservations, getSpaceTypes } from "@/model/space";
 import { getCurrentUser } from "./userController";
 import { Prisma } from "@prisma/client";
 
@@ -27,4 +27,8 @@ export async function adminCreateSpace(data: Prisma.SpaceCreateInput) {
   }
 
   return createSpace(data);
+}
+
+export async function getTypes() {
+  return getSpaceTypes();
 }

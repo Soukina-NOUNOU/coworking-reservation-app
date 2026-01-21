@@ -1,12 +1,20 @@
 "use client";
-
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X, Calendar, User } from "lucide-react";
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { getCurrentUserAction } from "@/serverAction/userAction";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    (async () => {
+      const user = await getCurrentUserAction();
+      setUser(user);
+    })();
+  }, []);
 
   const navigation = [
     { name: 'Espaces', href: '/spaces', icon: Calendar },
@@ -44,6 +52,9 @@ export default function Navbar() {
                   </Link>
                 );
               })}
+              {user && user.role === "ADMIN" && (
+                <a href="/admin/spaces" className="text-white bg-purple-600 px-3 py-1 rounded hover:bg-purple-700" > Admin </a>
+              )}
             </SignedIn>
           </div>
 
