@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import DeleteAccountButton from "@/components/DeleteAccountButton";
 
 export default async function MePage() {
   const user = await currentUser();
@@ -15,9 +16,12 @@ export default async function MePage() {
       <div className="container mx-auto px-4 py-8 mt-16">
         <div className="max-w-2xl mx-auto">
           <div className="card p-8">
-            <h1 className="text-3xl font-heading font-bold text-gray-900 mb-8">
-              Mon Profil
-            </h1>
+            <div className="flex items-center justify-between mb-8">
+              <h1 className="text-3xl font-heading font-bold text-gray-900">
+                Mon Profil 
+              </h1> 
+              <DeleteAccountButton /> 
+            </div>
             
             <div className="space-y-6">
               <div>
