@@ -34,7 +34,7 @@ export default function RootLayout({
           signInUrl="/sign-in"
           signUpUrl="/sign-up"
           afterSignInUrl="/"
-          afterSignUpUrl="/me"
+          afterSignUpUrl="/"
           appearance={{
             variables: {
               colorPrimary: '#16a34a', // Green primary color

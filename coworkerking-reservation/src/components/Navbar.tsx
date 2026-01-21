@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X, Calendar, Home, User } from "lucide-react";
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { Menu, X, Calendar, User } from "lucide-react";
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -55,11 +55,11 @@ export default function Navbar() {
                   Connexion
                 </button>
               </SignInButton>
-              <SignInButton mode="modal" forceRedirectUrl="/sign-up">
+              <SignUpButton mode="modal" forceRedirectUrl="/sign-up">
                 <button className="btn-primary">
                   Inscription
                 </button>
-              </SignInButton>
+              </SignUpButton>
             </SignedOut>
             <SignedIn>
               <UserButton 
@@ -117,14 +117,14 @@ export default function Navbar() {
                       Connexion
                     </button>
                   </SignInButton>
-                  <SignInButton mode="modal" forceRedirectUrl="/sign-up">
+                  <SignUpButton mode="modal" forceRedirectUrl="/sign-up">
                     <button
                       className="block w-full text-center btn-primary"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Inscription
                     </button>
-                  </SignInButton>
+                  </SignUpButton>
                 </SignedOut>
                 <SignedIn>
                   <div className="flex justify-center py-2">
