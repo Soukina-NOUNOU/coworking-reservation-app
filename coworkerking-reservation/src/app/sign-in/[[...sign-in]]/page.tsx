@@ -1,0 +1,40 @@
+import { SignIn } from '@clerk/nextjs';
+import Navbar from '@/components/Navbar';
+
+export default function SignInPage() {
+  return (
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-8">
+          <div>
+            <h2 className="mt-6 text-center text-3xl font-heading font-bold text-gray-900">
+              Connexion à votre compte
+            </h2>
+            <p className="mt-2 text-center text-sm text-gray-600">
+              Entrez votre email pour recevoir un lien de connexion magique
+            </p>
+          </div>
+          <SignIn 
+            appearance={{
+              elements: {
+                formButtonPrimary: 'bg-green-600 hover:bg-green-700 text-sm',
+                card: 'shadow-lg border-0',
+                headerTitle: 'hidden',
+                headerSubtitle: 'hidden',
+                socialButtonsBlockButton: 'border-gray-300 hover:bg-gray-50',
+                dividerLine: 'bg-gray-300',
+                dividerText: 'text-gray-500 text-sm',
+                formFieldInput: 'border-gray-300 focus:border-green-500 focus:ring-green-500',
+                footerActionLink: 'text-green-600 hover:text-green-500',
+              },
+              layout: {
+                socialButtonsPlacement: 'bottom'
+              }
+            }}
+          />
+        </div>
+      </div>
+    </>
+  );
+}

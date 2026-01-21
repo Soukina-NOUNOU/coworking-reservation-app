@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "react-toastify";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Loader } from "lucide-react";
 import ReservationCard from "@/components/ReservationCard";
 import { ReservationWithSpace } from "@/types";
 import { cancelReservationAction } from "@/actions/reservations";
@@ -38,7 +38,9 @@ export default function ReservationsList({ reservations: initialReservations }: 
 
   if (loading) {
     return (
-      <CircularProgress sx={{ display: "block", mx: "auto", mt: 4 }} />
+      <div className="flex justify-center py-8">
+        <Loader className="h-6 w-6 animate-spin text-primary-600" />
+      </div>
     );
   }
 

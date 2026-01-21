@@ -1,17 +1,12 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState } from "react";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
-import Alert from "@mui/material/Alert";
+import { useState, Suspense } from "react";
 import { toast } from "react-toastify";
 import Navbar from "@/components/Navbar";
+import { Calendar, Clock, MapPin, CheckCircle, AlertCircle, Loader } from "lucide-react";
 
-export default function ConfirmReservationPage() {
+function ConfirmReservationContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -45,58 +40,116 @@ export default function ConfirmReservationPage() {
   };
 
   return (
+    <div className="min-h-screen bg-gray-50 py-16">
+      <div className="max-w-2xl mx-auto px-4">
+        <div className="card p-8">
+          <h1 className="text-3xl font-heading font-bold text-gray-900 mb-8 text-center">
+            Confirmation de réservation
+          </h1>
+
+          {!spaceId || !start || !end ? (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+              <div className="flex items-start">
+                <AlertCircle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+                <div className="ml-3">
+                  <p className="text-red-800">
+                    Paramètres invalides. Impossible d'afficher la réservation.
+                  </p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="bg-gray-50 rounded-xl p-6 mb-8">
+                <h2 className="text-xl font-heading font-semibold text-gray-900 mb-6 flex items-center">
+                  <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                  Récapitulatif de votre réservation
+                </h2>
+
+                <div className="space-y-4">
+                  <div className="flex items-center">
+                    <MapPin className="h-5 w-5 text-gray-500 mr-3" />
+                    <div>
+                      <span className="text-sm text-gray-600">Espace :</span>
+                      <p className="font-medium text-gray-900">{spaceId}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center">
+                    <Calendar className="h-5 w-5 text-gray-500 mr-3" />
+                    <div>
+                      <span className="text-sm text-gray-600">Début :</span>
+                      <p className="font-medium text-gray-900">
+                        {new Date(start).toLocaleString("fr-FR")}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center">
+                    <Clock className="h-5 w-5 text-gray-500 mr-3" />
+                    <div>
+                      <span className="text-sm text-gray-600">Fin :</span>
+                      <p className="font-medium text-gray-900">
+                        {new Date(end).toLocaleString("fr-FR")}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                  <div className="flex items-start">
+                    <AlertCircle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+                    <div className="ml-3">
+                      <p className="text-red-800">{error}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <button
+                onClick={handleConfirm}
+                disabled={loading}
+                className="w-full btn-primary py-4 text-lg flex items-center justify-center"
+              >
+                {loading ? (
+                  <>
+                    <Loader className="h-5 w-5 animate-spin mr-2" />
+                    Confirmation en cours...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle className="h-5 w-5 mr-2" />
+                    Confirmer la réservation
+                  </>
+                )}
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function ConfirmReservationPage() {
+  return (
     <>
       <Navbar />
-
-      <Container sx={{ mt: 6 }}>
-        <Typography variant="h4" gutterBottom>
-          Confirmation de réservation
-        </Typography>
-        {!spaceId || !start || !end ? (
-          <Alert severity="error">
-            Paramètres invalides. Impossible d’afficher la réservation.
-          </Alert>
-        ) : (
-          <>
-            <Box sx={{ mt: 3 }}>
-              <Typography variant="h6">Récapitulatif</Typography>
-
-              <Typography>
-                <strong>Espace :</strong> {spaceId}
-              </Typography>
-
-              <Typography>
-                <strong>Début :</strong>{" "}
-                {new Date(start).toLocaleString("fr-FR")}
-              </Typography>
-
-              <Typography>
-                <strong>Fin :</strong> {new Date(end).toLocaleString("fr-FR")}
-              </Typography>
-            </Box>
-
-            {error && (
-              <Alert severity="error" sx={{ mt: 3 }}>
-                {error}
-              </Alert>
-            )}
-
-            <Button
-              variant="contained"
-              fullWidth
-              sx={{ mt: 4 }}
-              onClick={handleConfirm}
-              disabled={loading}
-            >
-              {loading ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                "Confirmer la réservation"
-              )}
-            </Button>
-          </>
-        )}
-      </Container>
+      <Suspense fallback={
+        <div className="min-h-screen bg-gray-50 py-16">
+          <div className="max-w-2xl mx-auto px-4">
+            <div className="card p-8">
+              <div className="flex justify-center">
+                <Loader className="h-8 w-8 animate-spin text-primary-600" />
+              </div>
+            </div>
+          </div>
+        </div>
+      }>
+        <ConfirmReservationContent />
+      </Suspense>
     </>
   );
 }

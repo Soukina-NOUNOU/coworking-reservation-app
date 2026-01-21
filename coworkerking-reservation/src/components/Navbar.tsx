@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X, Calendar, Home, User } from "lucide-react";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,29 +30,46 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="flex items-center space-x-1 text-gray-600 hover:text-primary-600 transition-colors"
-                >
-                  <Icon className="h-4 w-4" />
-                  <span className="font-medium">{item.name}</span>
-                </Link>
-              );
-            })}
+            <SignedIn>
+              {navigation.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="flex items-center space-x-1 text-gray-600 hover:text-primary-600 transition-colors"
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span className="font-medium">{item.name}</span>
+                  </Link>
+                );
+              })}
+            </SignedIn>
           </div>
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="/login" className="btn-outline">
-              Connexion
-            </Link>
-            <Link href="/register" className="btn-primary">
-              Inscription
-            </Link>
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="btn-outline">
+                  Connexion
+                </button>
+              </SignInButton>
+              <SignInButton mode="modal" forceRedirectUrl="/sign-up">
+                <button className="btn-primary">
+                  Inscription
+                </button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <UserButton 
+                appearance={{
+                  elements: {
+                    avatarBox: "w-10 h-10"
+                  }
+                }}
+              />
+            </SignedIn>
           </div>
 
           {/* Mobile menu button */}
@@ -73,35 +91,52 @@ export default function Navbar() {
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
-              {navigation.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-600 hover:text-primary-600 hover:bg-gray-50 transition-colors"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <Icon className="h-5 w-5" />
-                    <span className="font-medium">{item.name}</span>
-                  </Link>
-                );
-              })}
+              <SignedIn>
+                {navigation.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-600 hover:text-primary-600 hover:bg-gray-50 transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <Icon className="h-5 w-5" />
+                      <span className="font-medium">{item.name}</span>
+                    </Link>
+                  );
+                })}
+              </SignedIn>
               <div className="pt-4 mt-4 border-t border-gray-200 space-y-2">
-                <Link
-                  href="/login"
-                  className="block w-full text-center btn-outline"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Connexion
-                </Link>
-                <Link
-                  href="/register"
-                  className="block w-full text-center btn-primary"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Inscription
-                </Link>
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <button
+                      className="block w-full text-center btn-outline"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Connexion
+                    </button>
+                  </SignInButton>
+                  <SignInButton mode="modal" forceRedirectUrl="/sign-up">
+                    <button
+                      className="block w-full text-center btn-primary"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Inscription
+                    </button>
+                  </SignInButton>
+                </SignedOut>
+                <SignedIn>
+                  <div className="flex justify-center py-2">
+                    <UserButton 
+                      appearance={{
+                        elements: {
+                          avatarBox: "w-10 h-10"
+                        }
+                      }}
+                    />
+                  </div>
+                </SignedIn>
               </div>
             </div>
           </div>

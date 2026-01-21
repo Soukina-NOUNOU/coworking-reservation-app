@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Navbar from "../components/Navbar";
 import { ArrowRight, Users, Calendar, Wifi, Coffee, Shield, Clock } from "lucide-react";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 
 export default function HomePage() {
   const features = [
@@ -58,9 +59,18 @@ export default function HomePage() {
                 Découvrir nos espaces
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
-              <Link href="/register" className="btn-outline bg-white/10 text-white border-white/30 hover:bg-white/20 text-lg px-8 py-3">
-                Créer un compte
-              </Link>
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <button className="btn-outline bg-white/10 text-white border-white/30 hover:bg-white/20 text-lg px-8 py-3">
+                    Créer un compte
+                  </button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                <Link href="/reservations" className="btn-outline bg-white/10 text-white border-white/30 hover:bg-white/20 text-lg px-8 py-3">
+                  Mes réservations
+                </Link>
+              </SignedIn>
             </div>
           </div>
         </div>

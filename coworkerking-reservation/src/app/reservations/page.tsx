@@ -1,9 +1,7 @@
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Alert from "@mui/material/Alert";
 import Navbar from "@/components/Navbar";
 import ReservationsList from "@/components/ReservationsList";
 import { getUserReservations } from "@/controller/reservationController";
+import { Info } from "lucide-react";
 
 export default async function ReservationsPage() {
 
@@ -13,17 +11,24 @@ export default async function ReservationsPage() {
     <>
       <Navbar />
 
-      <Container sx={{ mt: 6 }}>
-        <Typography variant="h4" gutterBottom>
+      <div className="container mx-auto px-4 py-8 mt-16">
+        <h1 className="text-3xl font-heading font-bold text-gray-900 mb-8">
           Mes réservations
-        </Typography>
+        </h1>
 
         {reservations.length === 0 ? (
-          <Alert severity="info">Vous n'avez aucune réservation.</Alert>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+            <div className="flex items-start">
+              <Info className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+              <div className="ml-3">
+                <p className="text-blue-800">Vous n'avez aucune réservation.</p>
+              </div>
+            </div>
+          </div>
         ) : (
           <ReservationsList reservations={reservations} />
         )}
-      </Container>
+      </div>
     </>
   );
 }

@@ -29,7 +29,30 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ClerkProvider>
+        <ClerkProvider
+          publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+          signInUrl="/sign-in"
+          signUpUrl="/sign-up"
+          afterSignInUrl="/"
+          afterSignUpUrl="/me"
+          appearance={{
+            variables: {
+              colorPrimary: '#16a34a', // Green primary color
+              colorText: '#111827',
+              colorTextSecondary: '#6b7280',
+              fontFamily: 'Inter, sans-serif'
+            },
+            elements: {
+              formButtonPrimary: 'bg-green-600 hover:bg-green-700 text-white font-medium',
+              card: 'shadow-lg border border-gray-200 rounded-xl',
+              headerTitle: 'font-heading font-bold text-gray-900',
+              headerSubtitle: 'text-gray-600',
+              socialButtonsBlockButton: 'border-gray-300 hover:bg-gray-50 text-gray-700',
+              formFieldInput: 'border-gray-300 focus:border-green-500 focus:ring-green-500 rounded-lg',
+              footerActionLink: 'text-green-600 hover:text-green-500',
+            }
+          }}
+        >
           <Providers>
             {children}
           </Providers>
