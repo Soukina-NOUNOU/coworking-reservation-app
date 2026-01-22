@@ -5,12 +5,13 @@ import { ChevronLeft, ChevronRight, X, Expand } from "lucide-react";
 
 interface SpaceGalleryProps {
   photos: string[];
+  thumbnail?: string;
 }
 
-export default function SpaceGallery({ photos }: SpaceGalleryProps) {
+export default function SpaceGallery({ photos, thumbnail }: SpaceGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   
-  if (!photos || photos.length === 0) {
+  if (!photos || (photos.length === 0 && !thumbnail)) {
     return (
       <div className="h-96 bg-gray-200 flex items-center justify-center">
         <span className="text-gray-500">Aucune photo disponible</span>
@@ -64,7 +65,7 @@ export default function SpaceGallery({ photos }: SpaceGalleryProps) {
             {/* Main image */}
             <div className="col-span-2 row-span-2 relative group cursor-pointer" onClick={() => openLightbox(0)}>
               <img
-                src={photos[0]}
+                src={photos[0] || thumbnail}
                 alt="Espace de coworking - Image principale"
                 className="w-full h-full object-cover rounded-l-xl"
               />
