@@ -55,7 +55,7 @@ export default function DeleteAccountButton() {
                 Annuler
               </button>
 
-              <form action={onSave} method="post" onSubmit={() => setOpen(false)}>
+              <form action={onSave} onSubmit={() => setOpen(false)}>
                 <button
                   type="submit"
                   className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700"
