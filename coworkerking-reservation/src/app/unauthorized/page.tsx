@@ -21,7 +21,7 @@ export default function Unauthorized() {
         <div className="space-y-4">
           <Link
             href="/sign-in"
-            className="inline-flex items-center justify-center w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center justify-center w-full px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
           >
             Se connecter
           </Link>
@@ -38,7 +38,7 @@ export default function Unauthorized() {
         {/* Help text */}
         <p className="text-sm text-gray-500 mt-8">
           Pas encore de compte ?{' '}
-          <Link href="/sign-up" className="text-blue-600 hover:text-blue-700">
+          <Link href="/sign-up" className="text-primary-600 hover:text-primary-700">
             Créer un compte
           </Link>
         </p>

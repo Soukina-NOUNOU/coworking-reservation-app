@@ -23,7 +23,7 @@ export default function Forbidden() {
         <div className="space-y-4">
           <Link
             href="/"
-            className="inline-flex items-center justify-center w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center justify-center w-full px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
           >
             <Home className="w-5 h-5 mr-2" />
             Retourner à l'accueil
@@ -35,7 +35,7 @@ export default function Forbidden() {
         {/* Help text */}
         <p className="text-sm text-gray-500 mt-8">
           Besoin d'aide ?{' '}
-          <Link href="/contact" className="text-blue-600 hover:text-blue-700">
+          <Link href="/contact" className="text-primary-600 hover:text-primary-700">
             Contactez le support
           </Link>
         </p>

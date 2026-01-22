@@ -33,11 +33,11 @@ export default function InternalServerError() {
         </div>
 
         {/* Status and help */}
-        <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-sm text-blue-800 mb-2">
+        <div className="mt-8 p-4 bg-primary-50 border border-primary-200 rounded-lg">
+          <p className="text-sm text-primary-800 mb-2">
             <strong>Status du service :</strong> Incident en cours
           </p>
-          <p className="text-sm text-blue-600">
+          <p className="text-sm text-primary-600">
             Suivez les mises à jour sur notre{' '}
             <Link href="/status" className="underline hover:no-underline">
               page de statut

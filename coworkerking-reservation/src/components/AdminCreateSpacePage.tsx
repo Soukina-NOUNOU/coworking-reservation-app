@@ -26,9 +26,9 @@ export default function AdminCreateSpacePage(props: Readonly<CreateSpaceFormData
     return(
         <div className="max-w-4xl mx-auto mt-16 p-8">
             {/* Instructions */}
-            <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded mb-8">
-                <h3 className="font-semibold text-blue-800 mb-2">Instructions</h3>
-                <ul className="text-sm text-blue-700 space-y-1">
+            <div className="mt-8 p-4 bg-primary-50 border border-primary-200 rounded mb-8">
+                <h3 className="font-semibold text-primary-800 mb-2">Instructions</h3>
+                <ul className="text-sm text-primary-700 space-y-1">
                 <li>• Pour <strong>modifier</strong> ou <strong>supprimer</strong> un espace, rendez-vous sur la page de l'espace en question</li>
                 <li>• Les boutons d'administration apparaîtront automatiquement en haut de la page</li>
                 <li>• Seuls les administrateurs peuvent voir et utiliser ces fonctionnalités</li>
@@ -168,7 +168,7 @@ export default function AdminCreateSpacePage(props: Readonly<CreateSpaceFormData
 
                 <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+                className="w-full bg-primary-600 text-white py-2 rounded hover:bg-primary-700 transition"
                 >
                 Créer l'espace
                 </button>

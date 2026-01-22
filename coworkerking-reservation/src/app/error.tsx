@@ -60,7 +60,7 @@ export default function Error({
         <div className="space-y-4">
           <button
             onClick={() => reset()}
-            className="inline-flex items-center justify-center w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center justify-center w-full px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
           >
             <RefreshCw className="w-5 h-5 mr-2" />
             {errorInfo.action}

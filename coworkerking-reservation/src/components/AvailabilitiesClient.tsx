@@ -145,11 +145,11 @@ export default function AvailabilitiesClient({ spaceId, spaceName, reservations 
       )}
 
       {!loading && !error && slots.length === 0 && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+        <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-6">
           <div className="flex items-start">
-            <Info className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+            <Info className="h-5 w-5 text-primary-600 mt-0.5 flex-shrink-0" />
             <div className="ml-3">
-              <p className="text-blue-800">Aucun créneau disponible pour cette date.</p>
+              <p className="text-primary-800">Aucun créneau disponible pour cette date.</p>
             </div>
           </div>
         </div>

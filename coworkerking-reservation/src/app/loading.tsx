@@ -6,7 +6,7 @@ export default function Loading() {
       <div className="text-center">
         {/* Loading Spinner */}
         <div className="mb-6">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto" />
+          <Loader2 className="w-12 h-12 text-primary-600 animate-spin mx-auto" />
         </div>
         
         {/* Loading Text */}
@@ -20,9 +20,9 @@ export default function Loading() {
         
         {/* Animated dots */}
         <div className="flex justify-center items-center mt-4 space-x-1">
-          <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
-          <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" style={{ animationDelay: '150ms' }}></div>
-          <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
+          <div className="w-2 h-2 bg-primary-600 rounded-full animate-pulse" style={{ animationDelay: '0ms' }}></div>
+          <div className="w-2 h-2 bg-primary-600 rounded-full animate-pulse" style={{ animationDelay: '150ms' }}></div>
+          <div className="w-2 h-2 bg-primary-600 rounded-full animate-pulse" style={{ animationDelay: '300ms' }}></div>
         </div>
       </div>
     </div>

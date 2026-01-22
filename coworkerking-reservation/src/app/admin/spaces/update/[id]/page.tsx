@@ -208,7 +208,7 @@ export default async function UpdateSpacePage({ params }: UpdateSpacePageProps) 
           <div className="flex gap-4">
             <button
               type="submit"
-              className="flex-1 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+              className="flex-1 bg-primary-600 text-white py-2 rounded hover:bg-primary-700 transition"
             >
               Mettre à jour l'espace
             </button>

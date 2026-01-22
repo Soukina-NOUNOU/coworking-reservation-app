@@ -17,11 +17,11 @@ export default async function ReservationsPage() {
         </h1>
 
         {reservations.length === 0 ? (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+          <div className="bg-primary-50 border border-primary-200 rounded-lg p-6">
             <div className="flex items-start">
-              <Info className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+              <Info className="h-5 w-5 text-primary-600 mt-0.5 flex-shrink-0" />
               <div className="ml-3">
-                <p className="text-blue-800">Vous n'avez aucune réservation.</p>
+                <p className="text-primary-800">Vous n'avez aucune réservation.</p>
               </div>
             </div>
           </div>
