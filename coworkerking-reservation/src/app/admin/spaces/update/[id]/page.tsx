@@ -3,7 +3,10 @@ import Navbar from "@/components/Navbar";
 import { getCurrentUser } from "@/controller/userController";
 import { getSpace } from "@/controller/spaceController";
 import { getSpaceTypes } from "@/serverAction/spaceAction";
-import { notFound } from "next/navigation";
+import { AuthError, ForbiddenError, NotFoundError } from "@/lib/errors";
+import AdminUnauthorized from "@/app/admin/unauthorized/page";
+import NotFound from "@/app/not-found";
+import Forbidden from "@/app/forbidden/page";
 
 interface UpdateSpacePageProps {
   params: Promise<{
@@ -16,20 +19,34 @@ interface UpdateSpacePageProps {
 export default async function UpdateSpacePage({ params }: UpdateSpacePageProps) {
   const resolvedParams = await Promise.resolve(params);
   
-  const user = await getCurrentUser();
-  const space = await getSpace(resolvedParams.id);
-  const types = await getSpaceTypes();
-
-  if (!user || user.role !== "ADMIN") {
-    return (
-      <div className="text-center mt-20 text-red-600 font-semibold">
-        Accès refusé, vous n'avez pas les permissions nécessaires. Veuillez contacter l'administrateur du site.
-      </div>
-    );
-  }
-
-  if (!space) {
-    notFound();
+  let user;
+  let space;
+  let types;
+  
+  try {
+    user = await getCurrentUser();
+    
+    if (!user || user.role !== "ADMIN") {
+      return <AdminUnauthorized />;
+    }
+    
+    space = await getSpace(resolvedParams.id);
+    types = await getSpaceTypes();
+    
+    if (!space) {
+      return <NotFound />;
+    }
+  } catch (error) {
+    if (error instanceof AuthError) {
+      return <AdminUnauthorized />;
+    }
+    else if (error instanceof ForbiddenError) {
+      return <Forbidden />;
+    }
+    if (error instanceof NotFoundError) {
+       return <NotFound/> 
+    }
+    throw error;
   }
 
   return (

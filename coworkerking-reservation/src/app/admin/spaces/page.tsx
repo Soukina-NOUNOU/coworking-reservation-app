@@ -1,4 +1,4 @@
-import { createSpaceAction } from "@/app/admin/spaces/action";
+import AdminUnauthorized from "@/app/admin/unauthorized/page";
 import AdminCreateSpacePage from "@/components/AdminCreateSpacePage";
 import Navbar from "@/components/Navbar";
 import { getCurrentUser } from "@/controller/userController";
@@ -11,10 +11,7 @@ export default async function AdminSpacesPage() {
 
   if (!user || user.role !== "ADMIN") {
     return (
-      <div className="text-center mt-20 text-red-600 font-semibold">
-        Accès refusé, vous n'avez pas les permissions nécessaires.
-        Rapprochez vous de l'administrateur du site.
-      </div>
+        <AdminUnauthorized />
     );
   }
 

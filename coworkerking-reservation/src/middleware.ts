@@ -1,4 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
 const isPublicRoute = createRouteMatcher([
   "/", // HomePage
@@ -6,6 +7,13 @@ const isPublicRoute = createRouteMatcher([
   "/sign-in(.*)", // Clerk sign-in
   "/sign-up(.*)", // Clerk sign-up
   "/verify-email", // email verification page
+  "/unauthorized", // 401 page
+  "/forbidden", // 403 page
+  "/server-error", // 500 page
+]);
+
+const isAdminRoute = createRouteMatcher([
+  "/admin(.*)", // Admin routes
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
@@ -17,10 +25,15 @@ export default clerkMiddleware(async (auth, req) => {
   // For protected routes, check authentication
   const { userId } = await auth();
   
-  // If the user is not authenticated, redirect to sign-in
+  // If the user is not authenticated, redirect to unauthorized page
   if (!userId) {
-    const { redirectToSignIn } = await auth();
-    return redirectToSignIn();
+    return NextResponse.redirect(new URL('/unauthorized', req.url));
+  }
+
+  // For admin routes, additional checks can be added here if needed
+  if (isAdminRoute(req)) {
+    // Additional admin validation could be added here
+    // For now, i let the page component handle admin role verification
   }
   
   // If authenticated, allow access

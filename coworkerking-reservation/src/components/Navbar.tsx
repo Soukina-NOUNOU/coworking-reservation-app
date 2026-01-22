@@ -8,12 +8,37 @@ import { getCurrentUserAction } from "@/serverAction/userAction";
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    (async () => {
-      const user = await getCurrentUserAction();
-      setUser(user);
-    })();
+    let retryCount = 0;
+    const maxRetries = 3;
+    
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const fetchedUser = await getCurrentUserAction();
+        setUser(fetchedUser);
+        setLoading(false);
+        
+        // If no user and we haven't exceeded retries, try again after a delay
+        if (!fetchedUser && retryCount < maxRetries) {
+          retryCount++;
+          setTimeout(fetchUser, 1000 * retryCount); // Exponential backoff
+        }
+      } catch (error) {
+        console.log('Error fetching user in Navbar:', error);
+        setLoading(false);
+        
+        // Retry on error
+        if (retryCount < maxRetries) {
+          retryCount++;
+          setTimeout(fetchUser, 1000 * retryCount);
+        }
+      }
+    };
+    
+    fetchUser();
   }, []);
 
   const navigation = [

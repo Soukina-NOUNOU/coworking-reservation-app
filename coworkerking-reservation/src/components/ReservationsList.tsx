@@ -27,7 +27,7 @@ export default function ReservationsList({ reservations: initialReservations }: 
         setReservations(updated);
         toast.success("Réservation annulée !");
       } else {
-        toast.error(result.error || "Erreur lors de l'annulation");
+        toast.error( "Erreur lors de l'annulation, Veuillez réessayer plus tard." );
       }
     } catch (error) {
       toast.error("Erreur lors de l'annulation de la réservation");

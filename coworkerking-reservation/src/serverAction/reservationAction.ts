@@ -1,8 +1,8 @@
 "use server";
 
-import { createReservationController, updateReservationController } from "../controller/reservationController";
+import { createReservationController, updateReservationController, cancelReservation } from "../controller/reservationController";
 import { revalidatePath } from "next/cache";
-import { cancelReservation } from "@/controller/reservationController";
+import { handleServerActionError } from "@/lib/error-handler";
 
 export async function cancelReservationAction(reservationId: string) {
   try {
@@ -13,25 +13,41 @@ export async function cancelReservationAction(reservationId: string) {
     
     return { success: true };
   } catch (error) {
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : "Erreur inconnue" 
-    };
+    handleServerActionError(error);
   }
 }
 
 export async function createReservationAction(formData: { spaceId: string; start: string; end: string }) {
-  const spaceId = formData.spaceId;
-  const start = new Date(formData.start);
-  const end = new Date(formData.end);
+  try {
+    const spaceId = formData.spaceId;
+    const start = new Date(formData.start);
+    const end = new Date(formData.end);
 
-  return await createReservationController(spaceId, start, end);
+    const result = await createReservationController(spaceId, start, end);
+    
+    // Revalidate relevant paths
+    revalidatePath("/reservations");
+    revalidatePath(`/spaces/${spaceId}/availabilities`);
+    
+    return result;
+  } catch (error) {
+    handleServerActionError(error);
+  }
 }
 
 export async function updateReservationAction(formData: { reservationId: string; start: string; end: string }) {
-  const reservationId = formData.reservationId;
-  const start = new Date(formData.start);
-  const end = new Date(formData.end);
+  try {
+    const reservationId = formData.reservationId;
+    const start = new Date(formData.start);
+    const end = new Date(formData.end);
 
-  return await updateReservationController(reservationId, start, end);
+    const result = await updateReservationController(reservationId, start, end);
+    
+    // Revalidate relevant paths
+    revalidatePath("/reservations");
+    
+    return result;
+  } catch (error) {
+    handleServerActionError(error);
+  }
 }

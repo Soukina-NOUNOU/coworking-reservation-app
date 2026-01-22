@@ -4,7 +4,8 @@ import SpaceDetails from "@/components/Spacedetails";
 import SpaceGallery from "@/components/SpaceGallery";
 import AdminSpaceActions from "@/components/AdminSpaceActions";
 import { getSpace } from "@/controller/spaceController";
-import { getCurrentUser } from "@/controller/userController";
+import { getCurrentUserOptional } from "@/controller/userController";
+import { NotFoundError } from "@/lib/errors";
 
 interface SpaceDetailPageProps {
   params: Promise<{
@@ -21,11 +22,21 @@ export default async function SpaceDetailPage({ params }: SpaceDetailPageProps) 
     notFound();
   }
   
-  const space = await getSpace(resolvedParams.id);
-  const user = await getCurrentUser();
+  let space;
+  let user;
   
-  if (!space) {
-    notFound(); // Page 404 if the space does not exist
+  try {
+    space = await getSpace(resolvedParams.id);
+    user = await getCurrentUserOptional();
+    
+    if (!space) {
+      notFound();
+    }
+  } catch (error) {
+    if (error instanceof NotFoundError) {
+      notFound();
+    }
+    throw error;
   }
 
   return (

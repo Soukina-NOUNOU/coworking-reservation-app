@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import { getSpaceDetails } from "@/controller/spaceController";
 import AvailabilitiesClient from "@/components/AvailabilitiesClient";
+import { NotFoundError } from "@/lib/errors";
 
 interface AvailabilitiesPageProps {
   params: Promise<{
@@ -18,10 +19,19 @@ export default async function AvailabilitiesPage({ params }: AvailabilitiesPageP
     notFound();
   }
   
-  const space = await getSpaceDetails(resolvedParams.id);
+  let space;
   
-  if (!space) {
-    notFound();
+  try {
+    space = await getSpaceDetails(resolvedParams.id);
+    
+    if (!space) {
+      notFound();
+    }
+  } catch (error) {
+    if (error instanceof NotFoundError) {
+      notFound();
+    }
+    throw error; // Re-throw other errors
   }
 
   return (
