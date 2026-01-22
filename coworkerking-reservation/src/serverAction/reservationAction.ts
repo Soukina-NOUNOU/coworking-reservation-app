@@ -1,6 +1,6 @@
 "use server";
 
-import { createReservationController } from "../controller/reservationController";
+import { createReservationController, updateReservationController } from "../controller/reservationController";
 import { revalidatePath } from "next/cache";
 import { cancelReservation } from "@/controller/reservationController";
 
@@ -26,5 +26,12 @@ export async function createReservationAction(formData: { spaceId: string; start
   const end = new Date(formData.end);
 
   return await createReservationController(spaceId, start, end);
+}
 
+export async function updateReservationAction(formData: { reservationId: string; start: string; end: string }) {
+  const reservationId = formData.reservationId;
+  const start = new Date(formData.start);
+  const end = new Date(formData.end);
+
+  return await updateReservationController(reservationId, start, end);
 }

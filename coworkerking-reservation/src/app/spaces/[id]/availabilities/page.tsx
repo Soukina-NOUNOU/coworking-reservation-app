@@ -27,7 +27,11 @@ export default async function AvailabilitiesPage({ params }: AvailabilitiesPageP
   return (
     <>
       <Navbar />
-      <AvailabilitiesClient spaceId={space.id} reservations={space.reservations} />
+      <AvailabilitiesClient 
+        spaceId={space.id} 
+        spaceName={space.name}
+        reservations={space.reservations} 
+      />
     </>
   );
 }

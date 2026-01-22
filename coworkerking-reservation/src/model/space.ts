@@ -1,5 +1,5 @@
-import { Prisma, PrismaClient, SpaceType } from "@prisma/client";
-const prisma = new PrismaClient();
+import { Prisma, SpaceType } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 type SpaceCreateInput = Prisma.SpaceCreateInput;
 
 export async function getAllSpaces() {

@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { clerkClient } from "@clerk/nextjs/server";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function getUserByClerkId(clerkId: string) {
   // First try to find the user in our database

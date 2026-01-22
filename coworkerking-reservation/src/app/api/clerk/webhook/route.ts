@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
 import { Webhook } from "svix";
 import { NextRequest } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 interface ClerkWebhookEvent {
   type: string;
@@ -13,8 +13,6 @@ interface ClerkWebhookEvent {
     last_name: string;
   };
 }
-
-const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   const payload = await req.text();

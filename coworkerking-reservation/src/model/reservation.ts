@@ -1,5 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function createReservation(data: {
   userId: string;
@@ -16,12 +15,13 @@ export async function createReservation(data: {
   });
 }
 
-export async function findConflictingReservation(spaceId: string, start: Date, end: Date) {
+export async function findConflictingReservation(spaceId: string, start: Date, end: Date, excludeReservationId?: string) {
   return prisma.reservation.findFirst({
     where: {
       spaceId,
       start: { lt: end },
       end: { gt: start },
+      ...(excludeReservationId && { id: { not: excludeReservationId } }),
     },
   });
 }
@@ -55,6 +55,17 @@ export async function deleteReservation(id: string) {
 export async function getReservationById(id: string) {
   return prisma.reservation.findUnique({
     where: { id },
+    include: {
+      space: true,
+      user: true,
+    },
+  });
+}
+
+export async function updateReservation(id: string, data: { start: Date; end: Date }) {
+  return prisma.reservation.update({
+    where: { id },
+    data,
     include: {
       space: true,
       user: true,

@@ -34,7 +34,7 @@ export default function AdminSpaceActions({ spaceId, spaceName }: AdminSpaceActi
         <div className="flex gap-2">
           <a
             href={`/admin/spaces/update/${spaceId}`}
-            className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 transition"
+            className="bg-primary-600 text-white px-4 py-2 rounded text-sm hover:bg-primary-700 transition"
           >
             ✏️ Modifier
           </a>

@@ -1,5 +1,5 @@
 import { getCurrentUser } from "./userController";
-import { createReservation, findConflictingReservation, getReservationsByUserId, getReservationsBySpaceId, deleteReservation, getReservationById } from "@/model/reservation";
+import { createReservation, findConflictingReservation, getReservationsByUserId, getReservationsBySpaceId, deleteReservation, getReservationById, updateReservation } from "@/model/reservation";
 
 export async function createReservationController(spaceId: string, start: Date, end: Date) {
   const user = await getCurrentUser();
@@ -14,6 +14,27 @@ export async function createReservationController(spaceId: string, start: Date, 
     start,
     end,
   });
+}
+
+export async function updateReservationController(reservationId: string, start: Date, end: Date) {
+  const user = await getCurrentUser();
+  if (!user) throw new Error("Unauthorized");
+
+  // Check if the reservation belongs to the user
+  const reservation = await getReservationById(reservationId);
+  if (!reservation) throw new Error("Reservation not found");
+  if (reservation.userId !== user.id) throw new Error("Forbidden");
+
+  // Check if the reservation is in the future (cannot modify past reservations)
+  if (new Date(reservation.start) <= new Date()) {
+    throw new Error("Cannot modify past reservations");
+  }
+
+  // Check for conflicts (excluding the current reservation)
+  const conflict = await findConflictingReservation(reservation.spaceId, start, end, reservationId);
+  if (conflict) throw new Error("Time slot unavailable");
+
+  return updateReservation(reservationId, { start, end });
 }
 
 export async function getUserReservations() {

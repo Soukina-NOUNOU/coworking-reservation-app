@@ -1,7 +1,8 @@
 "use client";
 
 import { ReservationWithSpace } from "@/types";
-import { Calendar, MapPin, Clock, Trash2 } from "lucide-react";
+import { Calendar, MapPin, Clock, Trash2, Edit } from "lucide-react";
+import Link from "next/link";
 
 interface ReservationCardProps {
   reservation: ReservationWithSpace;
@@ -70,16 +71,25 @@ export default function ReservationCard({ reservation, onCancel }: ReservationCa
             </div>
           </div>
 
-          {/* Action Button */}
+          {/* Action Buttons */}
           <div className="ml-6">
             {!isPast && (
-              <button
-                onClick={() => onCancel(reservation.id)}
-                className="flex items-center space-x-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-red-200 hover:border-red-300"
-              >
-                <Trash2 className="h-4 w-4" />
-                <span>Annuler</span>
-              </button>
+              <div className="flex flex-col space-y-2">
+                <Link
+                  href={`/spaces/${reservation.space.id}/availabilities?editReservation=${reservation.id}`}
+                  className="flex items-center space-x-2 px-4 py-2 text-primary-600 hover:bg-primary-50 rounded-lg transition-colors border border-primary-200 hover:border-primary-300"
+                >
+                  <Edit className="h-4 w-4" />
+                  <span>Modifier</span>
+                </Link>
+                <button
+                  onClick={() => onCancel(reservation.id)}
+                  className="flex items-center space-x-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-red-200 hover:border-red-300"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  <span>Annuler</span>
+                </button>
+              </div>
             )}
           </div>
         </div>

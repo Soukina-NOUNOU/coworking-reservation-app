@@ -3,7 +3,7 @@
 import { Params } from "next/dist/server/request/params";
 import { Clock } from "lucide-react";
 import { useState } from "react";
-import { createReservationAction } from "@/serverAction/reservationAction";
+import { createReservationAction, updateReservationAction } from "@/serverAction/reservationAction";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -12,6 +12,7 @@ interface AvailabilitySlotProps {
     start: string;
     end: string;
     isReserved?: boolean;
+    editReservationId?: string | null;
   };
   spaceId: Params["id"];
 }
@@ -25,21 +26,35 @@ export default function AvailabilitySlot(props: Readonly<AvailabilitySlotProps>)
   
   // Check if the slot is already reserved
   const isReserved = props.slot.isReserved || false;
+  
+  // Check if we're in edit mode
+  const isEditMode = Boolean(props.slot.editReservationId);
 
   const onReserveClick = async () => {
     try {
       setLoading(true);
      
-    await createReservationAction({
-      spaceId: props.spaceId as string,
-      start: props.slot.start,
-      end: props.slot.end,
-    });
-    router.push("/reservations")
-    toast.success("Réservation réussie !");
-    
+      if (isEditMode && props.slot.editReservationId) {
+        // Update mode
+        await updateReservationAction({
+          reservationId: props.slot.editReservationId,
+          start: props.slot.start,
+          end: props.slot.end,
+        });
+        toast.success("Réservation modifiée avec succès !");
+        router.push("/reservations");
+      } else {
+        // Create mode
+        await createReservationAction({
+          spaceId: props.spaceId as string,
+          start: props.slot.start,
+          end: props.slot.end,
+        });
+        router.push("/reservations");
+        toast.success("Réservation réussie !");
+      }
 
-    setLoading(false);
+      setLoading(false);
     } catch (error) {
       console.error("Erreur lors de la réservation :", error);
       setLoading(false);
@@ -64,10 +79,18 @@ export default function AvailabilitySlot(props: Readonly<AvailabilitySlotProps>)
             ? 'bg-gray-400 text-gray-600 cursor-not-allowed opacity-50'
             : isReserved
             ? 'bg-orange-400 text-white cursor-not-allowed opacity-75'
-            : 'bg-primary-700 text-white hover:bg-primary-600 disabled:opacity-50'
+            : isEditMode
+            ? 'bg-green-600 text-white hover:bg-green-700 disabled:opacity-50'
+            : 'bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50'
         }`}
       >
-        {isSlotInPast ? 'Expiré' : isReserved ? 'Indisponible' : 'Réserver'}
+        {isSlotInPast 
+          ? 'Expiré' 
+          : isReserved 
+          ? 'Réservé' 
+          : isEditMode 
+          ? 'Créneau disponible'
+          : 'Réserver'}
       </button>
     </div>
   );

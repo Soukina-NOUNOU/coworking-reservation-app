@@ -1,12 +1,11 @@
 "use server";
 
 import { getCurrentUser } from "@/controller/userController";
-import { PrismaClient, SpaceType } from "@prisma/client";
+import { SpaceType } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import fs from "fs";
 import path from "path";
 import { redirect } from "next/navigation";
-
-const prisma = new PrismaClient();
 
 export async function updateSpaceAction(formData: FormData) {
   const user = await getCurrentUser();

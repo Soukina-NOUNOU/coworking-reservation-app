@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import dayjs from "dayjs";
 import AvailabilitySlot from "@/components/AvailabilitySlot";
-import { Loader, Calendar, AlertCircle, Info } from "lucide-react";
+import { Loader, Calendar, AlertCircle, Info, Edit } from "lucide-react";
 
 interface Reservation {
   id: string;
@@ -14,10 +15,14 @@ interface Reservation {
 
 interface AvailabilitiesClientProps {
   spaceId: string;
+  spaceName: string;
   reservations: Reservation[];
 }
 
-export default function AvailabilitiesClient({ spaceId, reservations }: AvailabilitiesClientProps) {
+export default function AvailabilitiesClient({ spaceId, spaceName, reservations }: AvailabilitiesClientProps) {
+  const searchParams = useSearchParams();
+  const editReservationId = searchParams.get('editReservation');
+  
   const [date, setDate] = useState(dayjs().format('YYYY-MM-DD'));
   const [slots, setSlots] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -78,7 +83,8 @@ export default function AvailabilitiesClient({ spaceId, reservations }: Availabi
       // Add reservation status to slots
       const slotsWithReservationStatus = fakeSlots.map(slot => ({
         ...slot,
-        isReserved: isSlotReserved(slot.start, slot.end)
+        isReserved: isSlotReserved(slot.start, slot.end),
+        editReservationId: editReservationId
       }));
 
       setSlots(slotsWithReservationStatus);
@@ -92,9 +98,17 @@ export default function AvailabilitiesClient({ spaceId, reservations }: Availabi
 
   return (
     <div className="container mx-auto px-4 py-8 mt-16">
-      <h1 className="text-3xl font-heading font-bold text-gray-900 mb-8">
-        Disponibilités
-      </h1>
+      <div className="flex items-center mb-8">
+        <h1 className="text-3xl font-heading font-bold text-gray-900">
+          Disponibilités
+        </h1>
+        {editReservationId && (
+          <div className="ml-4 flex items-center bg-primary-50 text-primary-700 px-3 py-1 rounded-full">
+            <Edit className="h-4 w-4 mr-2" />
+            <span className="text-sm font-medium">Modification pour l'espace : {spaceName.toUpperCase()}</span>
+          </div>
+        )}
+      </div>
 
       <div className="mb-8">
         <label className="block text-sm font-medium text-gray-700 mb-2">
