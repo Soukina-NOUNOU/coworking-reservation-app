@@ -11,6 +11,7 @@ interface AvailabilitySlotProps {
   slot: {
     start: string;
     end: string;
+    isReserved?: boolean;
   };
   spaceId: Params["id"];
 }
@@ -18,6 +19,12 @@ interface AvailabilitySlotProps {
 export default function AvailabilitySlot(props: Readonly<AvailabilitySlotProps>) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  // Check if the slot is in the past
+  const isSlotInPast = new Date(props.slot.start) <= new Date();
+  
+  // Check if the slot is already reserved
+  const isReserved = props.slot.isReserved || false;
 
   const onReserveClick = async () => {
     try {
@@ -51,10 +58,16 @@ export default function AvailabilitySlot(props: Readonly<AvailabilitySlotProps>)
       </div>
        <button
         onClick={onReserveClick}
-        disabled={loading}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
+        disabled={loading || isSlotInPast || isReserved}
+        className={`px-4 py-2 rounded transition ${
+          isSlotInPast 
+            ? 'bg-gray-400 text-gray-600 cursor-not-allowed opacity-50'
+            : isReserved
+            ? 'bg-orange-400 text-white cursor-not-allowed opacity-75'
+            : 'bg-primary-700 text-white hover:bg-primary-600 disabled:opacity-50'
+        }`}
       >
-        Réserver
+        {isSlotInPast ? 'Expiré' : isReserved ? 'Indisponible' : 'Réserver'}
       </button>
     </div>
   );

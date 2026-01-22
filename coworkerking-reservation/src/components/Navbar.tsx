@@ -53,7 +53,7 @@ export default function Navbar() {
                 );
               })}
               {user && user.role === "ADMIN" && (
-                <a href="/admin/spaces" className="text-white bg-purple-600 px-3 py-1 rounded hover:bg-purple-700" > Admin </a>
+                <a href="/admin/spaces" className="text-white bg-primary-700 px-3 py-1 rounded hover:bg-primary-700" > Admin </a>
               )}
             </SignedIn>
           </div>
