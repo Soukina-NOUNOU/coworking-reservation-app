@@ -7,7 +7,6 @@ export async function listSpaces() {
 }
 
 export async function getSpace(id: string) {
-  console.log('getSpace controller called with id:', id);
   
   if (!id || typeof id !== 'string') {
     throw new Error('Invalid space ID provided');
