@@ -5,7 +5,6 @@ import { SpaceType } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import fs from "fs";
 import path from "path";
-import { redirect } from "next/navigation";
 
 export async function updateSpaceAction(formData: FormData) {
   const user = await getCurrentUser();
@@ -74,8 +73,6 @@ export async function updateSpaceAction(formData: FormData) {
       equipments,
     }
   });
-
-  redirect(`/spaces/${id}`);
 }
 
 export async function deleteSpaceAction(id: string) {
