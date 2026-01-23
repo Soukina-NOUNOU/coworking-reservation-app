@@ -12,6 +12,7 @@
     "seed": "node prisma/seed.ts"
   },
   "dependencies": {
+    "@clerk/localizations": "^3.35.1",
     "@clerk/nextjs": "^6.36.8",
     "@headlessui/react": "^2.2.9",
     "dayjs": "^1.11.19",
