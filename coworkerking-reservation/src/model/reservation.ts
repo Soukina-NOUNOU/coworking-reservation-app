@@ -72,3 +72,21 @@ export async function updateReservation(id: string, data: { start: Date; end: Da
     },
   });
 }
+
+export async function getReservationsCount() {
+  return await prisma.reservation.count();
+}
+
+
+export async function getTotalRevenue() {
+  const reservations = await prisma.reservation.findMany({
+    include: {
+      space: true,
+    },
+  });
+  
+  return reservations.reduce((total, reservation) => {
+    const hours = (reservation.end.getTime() - reservation.start.getTime()) / (1000 * 60 * 60);
+    return total + (hours * reservation.space.pricePerHour);
+  }, 0);
+}

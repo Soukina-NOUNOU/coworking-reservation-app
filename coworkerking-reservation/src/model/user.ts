@@ -31,3 +31,7 @@ export async function getUserByClerkId(clerkId: string) {
 
   return user;
 }
+
+export async function getUsersCount() {
+  return await prisma.user.count();
+}

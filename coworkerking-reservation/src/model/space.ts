@@ -43,3 +43,7 @@ export async function getSpaceTypes() {
   // Return the enum values directly from Prisma
   return Object.values(SpaceType);
 }
+
+export async function getSpacesCount() {
+  return await prisma.space.count();
+}
