@@ -11,7 +11,10 @@ interface SpaceGalleryProps {
 export default function SpaceGallery({ photos, thumbnail }: SpaceGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   
-  if (!photos || (photos.length === 0 && !thumbnail)) {
+  // Combine thumbnail and additional photos into one array
+  const allImages = thumbnail ? [thumbnail, ...(photos || [])] : (photos || []);
+  
+  if (allImages.length === 0) {
     return (
       <div className="h-96 bg-gray-200 flex items-center justify-center">
         <span className="text-gray-500">Aucune photo disponible</span>
@@ -29,13 +32,13 @@ export default function SpaceGallery({ photos, thumbnail }: SpaceGalleryProps) {
 
   const nextImage = () => {
     if (selectedImage !== null) {
-      setSelectedImage((selectedImage + 1) % photos.length);
+      setSelectedImage((selectedImage + 1) % allImages.length);
     }
   };
 
   const prevImage = () => {
     if (selectedImage !== null) {
-      setSelectedImage(selectedImage === 0 ? photos.length - 1 : selectedImage - 1);
+      setSelectedImage(selectedImage === 0 ? allImages.length - 1 : selectedImage - 1);
     }
   };
 
@@ -43,11 +46,11 @@ export default function SpaceGallery({ photos, thumbnail }: SpaceGalleryProps) {
     <>
       {/* Gallery Grid */}
       <div className="bg-white">
-        {photos.length === 1 ? (
+        {allImages.length === 1 ? (
           // Single image layout
           <div className="relative group cursor-pointer" onClick={() => openLightbox(0)}>
             <img
-              src={photos[0]}
+              src={allImages[0]}
               alt="Espace de coworking"
               className="w-full h-96 lg:h-[500px] object-cover"
             />
@@ -62,10 +65,10 @@ export default function SpaceGallery({ photos, thumbnail }: SpaceGalleryProps) {
         ) : (
           // Multiple images layout
           <div className="grid grid-cols-4 gap-2 h-96 lg:h-[500px]">
-            {/* Main image */}
+            {/* Main image (thumbnail) */}
             <div className="col-span-2 row-span-2 relative group cursor-pointer" onClick={() => openLightbox(0)}>
               <img
-                src={photos[0] || thumbnail}
+                src={allImages[0]}
                 alt="Espace de coworking - Image principale"
                 className="w-full h-full object-cover rounded-l-xl"
               />
@@ -79,7 +82,7 @@ export default function SpaceGallery({ photos, thumbnail }: SpaceGalleryProps) {
             </div>
 
             {/* Secondary images */}
-            {photos.slice(1, 5).map((photo, index) => (
+            {allImages.slice(1, 5).map((photo, index) => (
               <div
                 key={index}
                 className="relative group cursor-pointer"
@@ -95,10 +98,10 @@ export default function SpaceGallery({ photos, thumbnail }: SpaceGalleryProps) {
                 />
                 
                 {/* Show remaining count on last image if there are more photos */}
-                {index === 3 && photos.length > 5 && (
+                {index === 3 && allImages.length > 5 && (
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-br-xl">
                     <span className="text-white font-semibold text-lg">
-                      +{photos.length - 5}
+                      +{allImages.length - 5}
                     </span>
                   </div>
                 )}
@@ -132,7 +135,7 @@ export default function SpaceGallery({ photos, thumbnail }: SpaceGalleryProps) {
             </button>
 
             {/* Navigation Buttons */}
-            {photos.length > 1 && (
+            {allImages.length > 1 && (
               <>
                 <button
                   onClick={prevImage}
@@ -151,7 +154,7 @@ export default function SpaceGallery({ photos, thumbnail }: SpaceGalleryProps) {
 
             {/* Image */}
             <img
-              src={photos[selectedImage]}
+              src={allImages[selectedImage]}
               alt={`Espace de coworking - Image ${selectedImage + 1}`}
               className="max-w-full max-h-full object-contain"
             />
@@ -159,7 +162,7 @@ export default function SpaceGallery({ photos, thumbnail }: SpaceGalleryProps) {
             {/* Image Counter */}
             <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
               <span className="text-white text-sm">
-                {selectedImage + 1} / {photos.length}
+                {selectedImage + 1} / {allImages.length}
               </span>
             </div>
           </div>

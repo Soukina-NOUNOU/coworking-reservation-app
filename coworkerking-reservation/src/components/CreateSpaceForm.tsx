@@ -14,11 +14,22 @@ export default function CreateSpaceForm({ types }: CreateSpaceFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedThumbnail, setSelectedThumbnail] = useState<File | null>(null);
   const [selectedPhotos, setSelectedPhotos] = useState<FileList | null>(null);
+  console.log(selectedThumbnail);
   
-  const onSave = async (data: FormData) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    // Validate required thumbnail
+    if (!selectedThumbnail) {
+      toast.error("L'image principale est obligatoire");
+      return;
+    }
+
+    const formData = new FormData(e.currentTarget);
+    
     setIsSubmitting(true);
     try {
-      await createSpaceAction(data);
+      await createSpaceAction(formData);
       router.push('/spaces');
       toast.success("L'espace a été créé avec succès.");
     } catch (error) {
@@ -31,7 +42,7 @@ export default function CreateSpaceForm({ types }: CreateSpaceFormProps) {
 
   const handleThumbnailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    setSelectedThumbnail(file || null);
+    setSelectedThumbnail(file!);
   };
 
   const handlePhotosChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +51,7 @@ export default function CreateSpaceForm({ types }: CreateSpaceFormProps) {
   };
 
   return (
-    <form action={onSave} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-8">
       {/* Navigation */}
       <div className="flex items-center gap-4 pb-6 border-b border-gray-200">
         <Link
@@ -189,7 +200,6 @@ export default function CreateSpaceForm({ types }: CreateSpaceFormProps) {
                 type="file"
                 name="thumbnail"
                 accept="image/*"
-                required
                 className="hidden"
                 id="thumbnail-upload"
                 onChange={handleThumbnailChange}

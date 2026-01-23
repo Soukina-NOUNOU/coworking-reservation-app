@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Space } from "@/types";
 import { Users, Euro, Calendar, MapPin, Wifi, Coffee, Shield, Clock, UserPlus } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
+import SpaceGallery from "./SpaceGallery";
 
 interface SpaceDetailsProps {
   space: Space;
@@ -53,6 +54,14 @@ export default function SpaceDetails({ space }: SpaceDetailsProps) {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Gallery Section */}
+      <div className="mb-8">
+        <SpaceGallery 
+          photos={space.photos || []} 
+          thumbnail={space.thumbnail}
+        />
       </div>
 
       {/* Info Cards */}
