@@ -22,9 +22,9 @@ const typeColors: { [key: string]: string } = {
 
 export default function SpaceCard({ space }: SpaceCardProps) {
   return (
-    <div className="coworking-card group cursor-pointer">
+    <div className="coworking-card group cursor-pointer h-[500px] flex flex-col">
       {/* Image */}
-      <div className="relative h-48 overflow-hidden">
+      <div className="relative h-48 flex-shrink-0 overflow-hidden">
         <img
           src={space.thumbnail || "/placeholder-space.jpg"}
           alt={space.name}
@@ -50,17 +50,17 @@ export default function SpaceCard({ space }: SpaceCardProps) {
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="p-6 flex-1 flex flex-col">
         <h3 className="font-heading font-semibold text-lg text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">
           {space.name}
         </h3>
         
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+        <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-shrink-0">
           {space.description}
         </p>
 
         {/* Info Row */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 flex-shrink-0">
           <div className="flex items-center space-x-1 text-sm text-gray-500">
             <Users className="h-4 w-4" />
             <span>{space.capacity} {space.capacity === 1 ? 'personne' : 'personnes'}</span>
@@ -68,32 +68,38 @@ export default function SpaceCard({ space }: SpaceCardProps) {
         </div>
 
         {/* Equipment Tags */}
-        {space.equipments && space.equipments.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-4">
-            {space.equipments.slice(0, 3).map((equipment, index) => (
-              <span
-                key={index}
-                className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-md"
-              >
-                {equipment}
-              </span>
-            ))}
-            {space.equipments.length > 3 && (
-              <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-md">
-                +{space.equipments.length - 3}
-              </span>
-            )}
-          </div>
-        )}
+        <div className="mb-4 flex-1">
+          {space.equipments && space.equipments.length > 0 ? (
+            <div className="flex flex-wrap gap-1">
+              {space.equipments.slice(0, 3).map((equipment, index) => (
+                <span
+                  key={index}
+                  className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-md"
+                >
+                  {equipment}
+                </span>
+              ))}
+              {space.equipments.length > 3 && (
+                <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-md">
+                  +{space.equipments.length - 3}
+                </span>
+              )}
+            </div>
+          ) : (
+            <div className="h-6"></div>
+          )}
+        </div>
 
-        {/* Action Button */}
-        <Link 
-          href={`/spaces/${space.id}`}
-          className="flex items-center justify-center w-full btn-primary group-hover:bg-primary-700 transition-colors"
-        >
-          <span>Voir détails</span>
-          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-        </Link>
+        {/* Action Button - Always at bottom */}
+        <div className="mt-auto">
+          <Link 
+            href={`/spaces/${space.id}`}
+            className="flex items-center justify-center w-full btn-primary group-hover:bg-primary-700 transition-colors"
+          >
+            <span>Voir détails</span>
+            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
       </div>
     </div>
   );

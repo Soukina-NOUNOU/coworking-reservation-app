@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { Space } from "@/types";
-import { Users, Euro, Calendar, MapPin, Wifi, Coffee, Shield, Clock } from "lucide-react";
+import { Users, Euro, Calendar, MapPin, Wifi, Coffee, Shield, Clock, UserPlus } from "lucide-react";
+import { useUser } from "@clerk/nextjs";
 
 interface SpaceDetailsProps {
   space: Space;
@@ -25,6 +26,8 @@ const equipmentIcons: { [key: string]: any } = {
 };
 
 export default function SpaceDetails({ space }: SpaceDetailsProps) {
+  const { isSignedIn } = useUser();
+
   return (
     <div className="bg-white">
       {/* Header Section */}
@@ -85,7 +88,7 @@ export default function SpaceDetails({ space }: SpaceDetailsProps) {
             </div>
             <div>
               <h3 className="font-semibold text-gray-900">Disponibilité</h3>
-              <p className="text-gray-600">7j/7 - 24h/24</p>
+              <p className="text-gray-600">7j/7 - 9h-17h</p>
             </div>
           </div>
         </div>
@@ -115,19 +118,39 @@ export default function SpaceDetails({ space }: SpaceDetailsProps) {
 
       {/* CTA Section */}
       <div className="bg-gradient-to-r from-primary-50 to-green-50 rounded-2xl p-8 text-center">
-        <h3 className="text-xl font-heading font-semibold text-gray-900 mb-4">
-          Prêt à réserver cet espace ?
-        </h3>
-        <p className="text-gray-600 mb-6">
-          Consultez les créneaux disponibles et réservez en quelques clics.
-        </p>
-        <Link 
-          href={`/spaces/${space.id}/availabilities`}
-          className="btn-primary text-lg px-8 py-3"
-        >
-          <Calendar className="mr-2 h-5 w-5" />
-          Voir les disponibilités
-        </Link>
+        {isSignedIn ? (
+          <>
+            <h3 className="text-xl font-heading font-semibold text-gray-900 mb-4">
+              Prêt à réserver cet espace ?
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Consultez les créneaux disponibles et réservez en quelques clics.
+            </p>
+            <Link 
+              href={`/spaces/${space.id}/availabilities`}
+              className="btn-primary text-lg px-8 py-3"
+            >
+              <Calendar className="mr-2 h-5 w-5" />
+              Voir les disponibilités
+            </Link>
+          </>
+        ) : (
+          <>
+            <h3 className="text-xl font-heading font-semibold text-gray-900 mb-4">
+              Inscrivez-vous pour réserver
+            </h3>
+            <p className="text-gray-600 mb-6">
+              Créez votre compte pour accéder aux réservations et profiter de nos espaces.
+            </p>
+            <Link 
+              href="/sign-up"
+              className="btn-primary text-lg px-8 py-3"
+            >
+              <UserPlus className="mr-2 h-5 w-5" />
+              S'inscrire
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );

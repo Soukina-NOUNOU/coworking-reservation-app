@@ -4,19 +4,23 @@ import { deleteAccountAction } from "@/serverAction/userAction";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useAuth } from "@clerk/nextjs";
 
 export default function DeleteAccountButton() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-    const onSave = async () => {
-        setLoading(true);
-        try {
-            await deleteAccountAction();
-            setOpen(false);
-            router.push('/')
-            toast.success("Compte supprimé avec succès !");
-        } catch (error) {
+  const { signOut } = useAuth();
+  
+  const onSave = async () => {
+    setLoading(true);
+    try {
+      await deleteAccountAction();
+      await signOut();
+      setOpen(false);
+      router.push('/');
+      toast.success("Compte supprimé avec succès !");
+    } catch (error) {
             console.error("Error deleting account:", error);
             toast.error("Une erreur est survenue lors de la suppression du compte. Veuillez réessayer.");
         } finally {
