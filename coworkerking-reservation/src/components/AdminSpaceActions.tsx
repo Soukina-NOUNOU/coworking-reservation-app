@@ -25,7 +25,7 @@ export default function AdminSpaceActions({ spaceId, spaceName }: AdminSpaceActi
   };
 
   return (
-    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 my-6">
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-sm font-medium text-yellow-800">Panneau Administrateur</h3>
@@ -58,7 +58,7 @@ export default function AdminSpaceActions({ spaceId, spaceName }: AdminSpaceActi
               Êtes-vous sûr de vouloir supprimer l'espace <strong>"{spaceName}"</strong> ?
               <br />
               <span className="text-red-600 text-sm">
-                Cette action est irréversible et supprimera également toutes les réservations associées.
+                Cette action est irréversible et supprimera également toutes les réservations associées. (Un email sera envoyé aux utilisateurs concernés, ainsi qu'un remboursement.)
               </span>
             </p>
             <div className="flex gap-4">

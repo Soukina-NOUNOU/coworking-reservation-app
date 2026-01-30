@@ -57,12 +57,12 @@ export default function SpaceDetails({ space }: SpaceDetailsProps) {
       </div>
 
       {/* Gallery Section */}
-      <div className="mb-8">
+      {/* <div className="mb-8">
         <SpaceGallery 
           photos={space.photos || []} 
           thumbnail={space.thumbnail}
         />
-      </div>
+      </div> */}
 
       {/* Info Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
